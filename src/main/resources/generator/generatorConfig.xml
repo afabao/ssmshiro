@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+    <properties resource="jdbc.properties"/>
+    <!--MyBatis3Simple-->
+    <context id="mysql" targetRuntime="MyBatis3Simple">
+
+        <!-- 通用mapper的代码生成插件 -->
+        <plugin type="tk.mybatis.mapper.generator.MapperPlugin">
+            <property name="mappers" value="tk.mybatis.mapper.common.Mapper"/>
+        </plugin>
+
+
+        <!--数据库连接的信息：驱动类、连接地址、用户名、密码 -->
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="${jdbc.url}"
+                        userId="${jdbc.username}"
+                        password="${jdbc.password}">
+        </jdbcConnection>
+        <!-- targetProject:生成model类的位置 -->
+        <javaModelGenerator targetPackage="com.afabao.sys.entity" targetProject=".\src\main\java"/>
+
+        <!-- targetProject:mapper映射文件生成的位置 -->
+        <sqlMapGenerator targetPackage="mapper" targetProject=".\src\main\resources"/>
+
+        <!-- targetPackage：mapper接口生成的位置 -->
+        <javaClientGenerator targetPackage="com.afabao.sys.dao" targetProject=".\src\main\java" type="XMLMAPPER"/>
+
+        <!-- 指定数据库表-->
+        <table tableName="sys_user" domainObjectName="User"/>
+        <table tableName="sys_role" domainObjectName="Role"/>
+        <table tableName="sys_user_role" domainObjectName="UserRole"/>
+        <table tableName="sys_resource" domainObjectName="Resource"/>
+        <table tableName="sys_role_resource" domainObjectName="RoleResource"/>
+    </context>
+</generatorConfiguration>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.afabao.sys.dao.UserMapper">
+  <resultMap id="BaseResultMap" type="com.afabao.sys.entity.User">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="username" jdbcType="VARCHAR" property="username" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="is_delete" jdbcType="INTEGER" property="isDelete" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+
+  <!--/*获取登陆用户的角色*/
+    Set<String> getUserRoleSet(Integer id);-->
+  <select id="getUserRoleSet" parameterType="java.lang.Integer" resultType="java.lang.String">
+       SELECT
+          DISTINCT t2.`name`
+          FROM
+              sys_user_role t1,
+              sys_role t2
+          WHERE
+              t1.role_id = t2.id
+          AND t2.id = #{userId}
+  </select>
+
+  <!--/*获取登陆用户的角色权限*/
+  Set<String> getUserPermissionSet(Integer id);-->
+  <select id="getUserPermissionSet" parameterType="java.lang.Integer" resultType="java.lang.String">
+    SELECT
+	        t1.perms
+        FROM
+            sys_resource t1,
+            sys_role_resource t2,
+            sys_user_role t3
+        WHERE
+            t1.id = t2.resource_id
+        AND t2.role_id = t3.role_id
+        AND t1.perms IS NOT NULL
+        AND t3.user_id = #{userId}
+  </select>
+    <!-- User findUserByUser(User user);-->
+    <select id="findUserByUser" resultType="com.afabao.sys.entity.User" parameterType="com.afabao.sys.entity.User">
+        select * from sys_user
+        where username = #{username}
+        and password = #{password}
+    </select>
+</mapper>
